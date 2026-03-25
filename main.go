@@ -1,9 +1,15 @@
 package main
 
-import "study/udp"
+import (
+	"study/icmp"
+)
 
 func main() {
-	err := udp.Send("127.0.0.1", 8888, []byte("udptest1234"))
+	/*err := udp.Send("127.0.0.1", 8888, []byte("udptest1234"))
+	if err != nil {
+		panic(err)
+	}*/
+	err := icmp.SendEcho("127.0.0.1")
 	if err != nil {
 		panic(err)
 	}

@@ -7,14 +7,14 @@ import (
 	"syscall"
 )
 
-func SendEcho(address string) error {
+func SendEcho(address string, data []byte) error {
 	var dst [4]byte
 	copy(dst[:], net.ParseIP(address).To4())
 
 	ih := &ip.Header{
 		VersionIHL:         (4 << 4) | (5 & 0x0F),
 		Tos:                0,
-		TotalLength:        28,
+		TotalLength:        29,
 		Identification:     0,
 		FlagsFragment:      0x4000, // df = 1
 		TTL:                64,
@@ -24,10 +24,10 @@ func SendEcho(address string) error {
 	}
 	buf := ih.BuildHeader()
 
-	// just test
 	e := &Echo{
 		Identifier: 0,
 		Sequence:   0,
+		Data:       data,
 	}
 	buf = append(buf, e.BuildEchoPacket()...)
 

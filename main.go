@@ -9,7 +9,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}*/
-	err := icmp.SendEcho("127.0.0.1")
+	err := icmp.SendEcho("127.0.0.1", []byte{})
 	if err != nil {
 		panic(err)
 	}

@@ -16,6 +16,7 @@ type Header struct {
 type Echo struct {
 	Identifier uint16
 	Sequence   uint16
+	Data       []byte
 }
 
 func (h *Header) BuildHeader(buf []byte) {
@@ -25,7 +26,7 @@ func (h *Header) BuildHeader(buf []byte) {
 }
 
 func (e *Echo) BuildEchoPacket() []byte {
-	buf := make([]byte, 8)
+	buf := make([]byte, 8+len(e.Data))
 	// build header
 	h := &Header{
 		Type:     8,
@@ -36,6 +37,9 @@ func (e *Echo) BuildEchoPacket() []byte {
 
 	binary.BigEndian.PutUint16(buf[4:6], e.Identifier)
 	binary.BigEndian.PutUint16(buf[6:8], e.Sequence)
+
+	// data
+	copy(buf[8:], e.Data)
 
 	// checksum
 	binary.BigEndian.PutUint16(buf[2:4], checksum.Checksum(buf))
